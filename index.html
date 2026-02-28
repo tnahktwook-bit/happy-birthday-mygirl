@@ -221,23 +221,7 @@
             }
         }
 
-        /* Music Control */
-        .music-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--primary);
-            width: 45px;
-            height: 45px;
-            border-radius: 50%;
-            color: white;
-            cursor: pointer;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+
     </style>
 </head>
 
@@ -246,11 +230,7 @@
     <div class="bg-gradient"></div>
     <div class="stars"></div>
 
-    <button class="music-btn" onclick="toggleMusic()" id="musicTrigger">🔇</button>
 
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-15.mp3" type="audio/mpeg">
-    </audio>
 
     <div class="pages">
         <div id="page0" class="page active">
@@ -318,26 +298,10 @@
     </div>
 
     <script>
-        const music = document.getElementById('bgMusic');
-        let isPlaying = false;
-
-        function toggleMusic() {
-            if (isPlaying) {
-                music.pause();
-                document.getElementById('musicTrigger').innerText = '🔇';
-            } else {
-                music.play();
-                document.getElementById('musicTrigger').innerText = '🎵';
-            }
-            isPlaying = !isPlaying;
-        }
 
         function checkPass() {
             const val = document.getElementById('passInput').value.toLowerCase();
             if (val.length > 0) {
-                music.play();
-                isPlaying = true;
-                document.getElementById('musicTrigger').innerText = '🎵';
                 go(1);
                 setInterval(spawnHeart, 700);
             }
