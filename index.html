@@ -1,195 +1,230 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Happy Birthday My Love ❤️</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday My Love ❤️</title>
+    <style>
+        :root {
+            --primary-pink: #ff4e8a;
+            --soft-pink: #ff9a9e;
+            --white: #ffffff;
+        }
 
-<style>
-body {
-    margin:0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#ff4e8a,#ff9a9e);
-    color:white;
-    text-align:center;
-    overflow-x:hidden;
-}
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-pink), var(--soft-pink));
+            color: var(--white);
+            text-align: center;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
 
-/* PASSWORD SCREEN */
-#lockScreen{
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    z-index:999;
-}
+        /* --- SCREENS --- */
+        .screen {
+            display: none;
+            padding: 50px 20px;
+            animation: fadeIn 1s ease-in-out forwards;
+            min-height: 80vh;
+        }
 
-input{
-    padding:12px;
-    border-radius:20px;
-    border:none;
-    text-align:center;
-}
+        .active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
 
-button{
-    padding:12px 25px;
-    border:none;
-    border-radius:30px;
-    background:white;
-    color:#ff4e8a;
-    margin-top:10px;
-    cursor:pointer;
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.hidden{display:none;}
+        /* --- REUSABLE COMPONENTS --- */
+        button {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            background: var(--white);
+            color: var(--primary-pink);
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            margin: 20px;
+        }
 
-.container{
-    padding:50px 20px;
-}
+        button:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
 
-h1{
-    font-size:40px;
-    animation:float 3s infinite;
-}
+        input {
+            padding: 15px;
+            border-radius: 25px;
+            border: none;
+            text-align: center;
+            outline: none;
+            font-size: 1rem;
+        }
 
-@keyframes float{
-    0%,100%{transform:translateY(0);}
-    50%{transform:translateY(-10px);}
-}
+        /* --- SPECIFIC PAGES --- */
+        #lockScreen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 9999;
+        }
 
-/* HEARTS */
-.heart{
-    position:fixed;
-    bottom:-20px;
-    font-size:20px;
-    animation:rise 6s linear infinite;
-}
+        .letter-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            backdrop-filter: blur(10px);
+            line-height: 1.6;
+            font-style: italic;
+        }
 
-@keyframes rise{
-    0%{transform:translateY(0);opacity:1;}
-    100%{transform:translateY(-100vh);opacity:0;}
-}
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1000px;
+        }
 
-/* GALLERY */
-.gallery img{
-    width:200px;
-    border-radius:15px;
-    margin:10px;
-    transition:0.3s;
-}
-.gallery img:hover{
-    transform:scale(1.1);
-}
+        .gallery img {
+            width: 100%;
+            border-radius: 15px;
+            border: 5px solid white;
+            transition: 0.5s;
+        }
 
-/* PROPOSAL */
-#proposal{
-    margin-top:40px;
-    font-size:28px;
-    display:none;
-}
+        /* --- ANIMATIONS --- */
+        .heart {
+            position: fixed;
+            bottom: -20px;
+            animation: rise 6s linear infinite;
+            z-index: -1;
+        }
 
-/* FIREWORK CANVAS */
-canvas{
-    position:fixed;
-    top:0;
-    left:0;
-    pointer-events:none;
-}
-</style>
+        @keyframes rise {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        canvas { position: fixed; top: 0; left: 0; pointer-events: none; z-index: 10; }
+    </style>
 </head>
-
 <body>
 
-<!-- PASSWORD LOCK -->
-<div id="lockScreen">
-    <h2>Enter Secret Password 💖</h2>
-    <input type="password" id="password" placeholder="Enter password">
-    <button onclick="unlock()">Open My Heart ❤️</button>
-</div>
+    <div id="lockScreen" class="screen active">
+        <h2>Enter Our Secret Password 💖</h2>
+        <input type="password" id="password" placeholder="Hint: i_o_e_o_">
+        <button onclick="unlock()">Open My Heart ❤️</button>
+    </div>
 
-<canvas id="fireworks"></canvas>
+    <canvas id="fireworks"></canvas>
 
-<div class="container hidden" id="mainContent">
+    <div id="page1" class="screen">
+        <h1 style="font-size: 3rem;">Happy Birthday, Queen! 🎂</h1>
+        <p>Today is all about you. I've prepared a little journey for us.</p>
+        <button onclick="showPage('page2')">Read My Letter ✉️</button>
+    </div>
 
-<h1>Happy Birthday My Queen 🎂❤️</h1>
+    <div id="page2" class="screen">
+        <h2>My Dearest,</h2>
+        <div class="letter-box">
+            <p>"Every single day I spend with you feels like a dream. Your laugh is my favorite song, and your smile is my only sunshine. On your birthday, I want you to know that my love for you grows deeper with every heartbeat..."</p>
+        </div>
+        <button onclick="showPage('page3')">See Our Memories 📸</button>
+    </div>
 
-<p>You are my everything. My happiness. My forever 💍</p>
+    <div id="page3" class="screen">
+        <h2>Our Beautiful Journey</h2>
+        <div class="gallery">
+            <img src="https://via.placeholder.com/300" alt="Memory 1">
+            <img src="https://via.placeholder.com/300" alt="Memory 2">
+            <img src="https://via.placeholder.com/300" alt="Memory 3">
+        </div>
+        <button onclick="showPage('page4')">The Final Surprise 🎁</button>
+    </div>
 
-<button onclick="showProposal()">Click For Surprise 💖</button>
+    <div id="page4" class="screen">
+        <h1 id="proposalText">Will You Stay With Me Forever? 💍</h1>
+        <div id="finalButtons">
+            <button onclick="celebrate()">YES! ❤️</button>
+            <button onmouseover="moveButton(this)">No 🏃‍♂️</button>
+        </div>
+    </div>
 
-<div id="proposal">
-    Will You Stay With Me Forever? 💍🥺❤️
-</div>
+    <audio id="music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
-<h2>Our Beautiful Memories 📸</h2>
-<div class="gallery">
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
-</div>
-
-</div>
-
-<!-- Romantic Music -->
-<audio id="music" autoplay loop>
-<source src="music.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-
-/* PASSWORD */
-function unlock(){
-    if(document.getElementById("password").value === "iloveyou"){
-        document.getElementById("lockScreen").style.display="none";
-        document.getElementById("mainContent").classList.remove("hidden");
-        startHearts();
-        startFireworks();
-    } else {
-        alert("Wrong password 😝");
-    }
-}
-
-/* HEART ANIMATION */
-function startHearts(){
-    setInterval(()=>{
-        let heart=document.createElement("div");
-        heart.innerHTML="❤️";
-        heart.className="heart";
-        heart.style.left=Math.random()*100+"vw";
-        heart.style.fontSize=(20+Math.random()*30)+"px";
-        document.body.appendChild(heart);
-        setTimeout(()=>heart.remove(),6000);
-    },500);
-}
-
-/* PROPOSAL */
-function showProposal(){
-    document.getElementById("proposal").style.display="block";
-}
-
-/* FIREWORKS */
-function startFireworks(){
-    const canvas=document.getElementById("fireworks");
-    const ctx=canvas.getContext("2d");
-    canvas.width=window.innerWidth;
-    canvas.height=window.innerHeight;
-
-    setInterval(()=>{
-        let x=Math.random()*canvas.width;
-        let y=Math.random()*canvas.height/2;
-        for(let i=0;i<30;i++){
-            ctx.beginPath();
-            ctx.arc(x+Math.random()*100-50,y+Math.random()*100-50,3,0,Math.PI*2);
-            ctx.fillStyle="white";
-            ctx.fill();
+    <script>
+        // NAVIGATION
+        function showPage(pageId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            window.scrollTo(0,0);
         }
-    },800);
-}
 
-</script>
+        // UNLOCK
+        function unlock() {
+            const pw = document.getElementById("password").value;
+            if(pw.toLowerCase() === "iloveyou") {
+                document.getElementById("lockScreen").style.display = "none";
+                showPage('page1');
+                document.getElementById("music").play();
+                startHearts();
+            } else {
+                alert("Wrong password! Try: iloveyou");
+            }
+        }
 
+        // HEARTS
+        function startHearts() {
+            setInterval(() => {
+                const heart = document.createElement("div");
+                heart.innerHTML = ["❤️", "💖", "💗", "🌸"][Math.floor(Math.random() * 4)];
+                heart.className = "heart";
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.fontSize = (20 + Math.random() * 30) + "px";
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 6000);
+            }, 400);
+        }
+
+        // FINALE CELEBRATION
+        function celebrate() {
+            document.getElementById("proposalText").innerHTML = "YOU MADE ME THE HAPPIEST! 🎉💍❤️";
+            document.getElementById("finalButtons").style.display = "none";
+            startFireworks();
+        }
+
+        // JOKING "NO" BUTTON
+        function moveButton(btn) {
+            btn.style.position = 'absolute';
+            btn.style.top = Math.random() * 80 + 'vh';
+            btn.style.left = Math.random() * 80 + 'vw';
+        }
+
+        // FIREWORKS CANVAS
+        function startFireworks() {
+            const canvas = document.getElementById("fireworks");
+            const ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            function draw() {
+                ctx.fillStyle = "rgba(0,0,0,0.1)";
+                ctx.fillRect(0,0,canvas.width, canvas.height);
+                for(let i=0; i<5; i++) {
+                    ctx.beginPath();
+                    ctx.arc(Math.random()*canvas.width, Math.random()*canvas.height, 2, 0, Math.PI*2);
+                    ctx.fillStyle = `hsl(${Math.random()*360}, 100%, 50%)`;
+                    ctx.fill();
+                }
+                requestAnimationFrame(draw);
+            }
+            draw();
+        }
+    </script>
 </body>
 </html>
