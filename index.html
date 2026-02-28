@@ -237,7 +237,7 @@
             <h2 class="myanmar">နှလုံးသားတံခါးကိုဖွင့်ပါ</h2>
             <input type="text" id="passInput"
                 style="padding:15px; border-radius:30px; border:1px solid #ffb7c5; background:none; color:white; text-align:center; width:200px; margin:20px;"
-                placeholder="Name or 'love'">
+                placeholder="Enter Name or 'loveyou'">
             <button class="btn" onclick="checkPass()">Open ❤️</button>
         </div>
 
@@ -300,10 +300,14 @@
     <script>
 
         function checkPass() {
-            const val = document.getElementById('passInput').value.toLowerCase();
-            if (val.length > 0) {
+            const raw = (document.getElementById('passInput') || {}).value || '';
+            const val = raw.trim().toLowerCase();
+            const allowed = ['may', 'maymyatnoekhin', "koko'sbae", 'kokosbae', 'loveyou'];
+            if (allowed.includes(val)) {
                 go(1);
                 setInterval(spawnHeart, 700);
+            } else {
+                alert('Incorrect pass. Please try: may, maymyatnoekhin, koko\'sbae, or loveyou.');
             }
         }
 
