@@ -1,201 +1,620 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eternal Love | For My Queen</title>
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:ital,wght@0,400;1,700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --bg: #0f0c29;
-            --accent: #ff4e8a;
-            --gold: #d4af37;
-            --glass: rgba(255, 255, 255, 0.08);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For the love of my life · happy birthday</title>
+  <!-- Google fonts: romantic + Myanmar fallback -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,500&family=Poppins:wght@200;300;400;600&family=Noto+Sans+Myanmar:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    /* RESET & BASE */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body, html {
-            margin: 0; padding: 0; height: 100%;
-            font-family: 'Poppins', sans-serif;
-            background: radial-gradient(circle at center, #1b1b2f 0%, #020205 100%);
-            color: white; overflow: hidden;
-        }
+    body {
+      font-family: 'Poppins', 'Noto Sans Myanmar', sans-serif;
+      background: #0b0719;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
 
-        /* --- UI ELEMENTS --- */
-        .screen {
-            position: absolute; inset: 0;
-            display: none; flex-direction: column;
-            justify-content: center; align-items: center;
-            padding: 20px; text-align: center;
-            backdrop-filter: blur(5px);
-        }
-        .active { display: flex; animation: fadeIn 1.2s ease-out; }
+    /* soft animated background */
+    .bg-gradient {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 30% 40%, #2b1b3a, #0a0515);
+      z-index: -2;
+    }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(1.05); } to { opacity: 1; transform: scale(1); } }
+    .bg-particles {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="20" r="2" fill="%23ffb6c1" opacity="0.3"/><circle cx="90" cy="70" r="3" fill="%23d4af37" opacity="0.2"/><circle cx="40" cy="80" r="2" fill="%23ff9a9e" opacity="0.2"/><circle cx="70" cy="15" r="4" fill="%23ffffff" opacity="0.15"/></svg>');
+      background-size: 250px 250px;
+      opacity: 0.6;
+      z-index: -1;
+      animation: drift 60s linear infinite;
+    }
 
-        .glass-card {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 40px; padding: 50px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            max-width: 600px; width: 90%;
-            position: relative; overflow: hidden;
-        }
+    @keyframes drift {
+      0% { background-position: 0 0; }
+      100% { background-position: 300px 300px; }
+    }
 
-        h1 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--accent); margin: 0; }
-        .btn-gold {
-            background: linear-gradient(45deg, #d4af37, #f9f295, #b8860b);
-            color: #000; padding: 18px 45px; border: none;
-            border-radius: 50px; font-weight: 700; cursor: pointer;
-            margin-top: 30px; letter-spacing: 2px;
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-        }
-        .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(212, 175, 55, 0.5); }
+    /* main container – pages stack */
+    .pages {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      min-height: 600px;
+      margin: 20px;
+    }
 
-        /* --- THE VIRTUAL GIFT BOX --- */
-        .gift-container {
-            position: relative; width: 200px; height: 200px;
-            cursor: pointer; margin: 50px auto;
-            perspective: 1000px;
-        }
+    .page {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(20, 10, 30, 0.3);
+      border: 1px solid rgba(255, 200, 220, 0.15);
+      border-radius: 50px 20px 50px 20px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.7), 0 0 0 2px rgba(255, 192, 203, 0.1) inset;
+      padding: 2rem 2.5rem;
+      transition: opacity 0.8s ease, transform 0.8s ease;
+      opacity: 0;
+      transform: scale(0.95) translateY(30px);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        .gift-box {
-            width: 100%; height: 100%; background: var(--accent);
-            position: relative; border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
+    .page.active {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+      z-index: 10;
+    }
 
-        .gift-box::before { /* Ribbon Vertical */
-            content: ''; position: absolute; left: 50%; top: 0;
-            width: 30px; height: 100%; background: var(--gold);
-            transform: translateX(-50%);
-        }
+    /* typography */
+    h1, h2, h3 {
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
 
-        .gift-box::after { /* Ribbon Horizontal */
-            content: ''; position: absolute; left: 0; top: 50%;
-            width: 100%; height: 30px; background: var(--gold);
-            transform: translateY(-50%);
-        }
+    h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 4rem;
+      background: linear-gradient(135deg, #fbc2c2, #f8e0b0, #ffb3c6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 5px 10px #ff4d6d);
+      margin-bottom: 0.5rem;
+    }
 
-        .lid {
-            position: absolute; top: -10px; left: -5%;
-            width: 110%; height: 40px; background: var(--accent);
-            border-radius: 5px; z-index: 2; transition: 0.8s;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
+    .myanmar {
+      font-family: 'Noto Sans Myanmar', sans-serif;
+      font-size: 1.4rem;
+      background: rgba(255, 200, 200, 0.1);
+      display: inline-block;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      backdrop-filter: blur(5px);
+      margin: 0.5rem 0;
+    }
 
-        .open .lid { transform: translateY(-100px) rotate(-15deg); opacity: 0; }
-        .open .gift-box { transform: scale(0.9); transition: 0.5s; }
+    /* buttons */
+    .btn {
+      background: linear-gradient(145deg, #d4af37, #f7d970, #b8860b);
+      border: none;
+      color: #1e0f1e;
+      font-weight: 600;
+      font-size: 1.2rem;
+      padding: 14px 40px;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(212, 175, 55, 0.5);
+      transition: 0.3s;
+      margin: 10px;
+      position: relative;
+      overflow: hidden;
+    }
 
-        /* --- FLOATING HEARTS --- */
-        .floating-heart {
-            position: absolute; pointer-events: none;
-            color: var(--accent); opacity: 0.6;
-            animation: floatUp 5s linear forwards;
-        }
-        @keyframes floatUp {
-            to { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
-        }
-    </style>
+    .btn:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 20px 40px #ff9fbb;
+    }
+
+    .btn::after {
+      content: "💖";
+      position: absolute;
+      left: -30px;
+      top: -10px;
+      font-size: 2rem;
+      opacity: 0.2;
+      transition: 0.5s;
+    }
+
+    .btn:hover::after {
+      left: 105%;
+      top: -15px;
+      opacity: 0.8;
+    }
+
+    /* password input */
+    .password-field {
+      background: rgba(255,255,240,0.15);
+      border: 2px solid #ffb7c5;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 50px;
+      font-size: 1.2rem;
+      text-align: center;
+      outline: none;
+      width: 80%;
+      max-width: 300px;
+      backdrop-filter: blur(5px);
+      margin: 20px 0;
+    }
+
+    .password-field::placeholder {
+      color: #ffcfcf;
+      font-style: italic;
+    }
+
+    /* gift box / reason cards */
+    .reasons-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+    }
+
+    .reason-card {
+      background: rgba(255, 240, 245, 0.12);
+      backdrop-filter: blur(8px);
+      width: 150px;
+      height: 150px;
+      border-radius: 40% 20% 40% 20%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid #ffb6c1;
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 15px 30px #00000060;
+    }
+
+    .reason-card:hover {
+      transform: rotate(5deg) scale(1.05);
+      background: rgba(255, 180, 200, 0.3);
+      border-color: gold;
+    }
+
+    .reason-card .emoji-big {
+      font-size: 3rem;
+    }
+
+    .reason-card span {
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    /* letter area */
+    .letter {
+      background: rgba(30, 20, 40, 0.5);
+      border-left: 8px solid #ffa5b9;
+      padding: 25px;
+      border-radius: 40px 10px 40px 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      text-align: left;
+      margin: 30px 0;
+      box-shadow: 0 20px 40px black;
+      white-space: pre-line;
+      line-height: 1.8;
+    }
+
+    .typewriter {
+      border-right: 2px solid #ffb6c1;
+      animation: blink 0.8s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%,100% { border-color: transparent; }
+      50% { border-color: #ffb6c1; }
+    }
+
+    /* gallery */
+    .gallery {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .gallery-item {
+      width: 160px;
+      border-radius: 30px 10px 30px 10px;
+      overflow: hidden;
+      border: 4px solid white;
+      transform: rotate(var(--rot, 0deg));
+      transition: 0.3s;
+      box-shadow: 0 10px 30px black;
+    }
+
+    .gallery-item:hover {
+      transform: rotate(0deg) scale(1.1);
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .caption {
+      background: rgba(0,0,0,0.5);
+      padding: 5px;
+      font-size: 0.8rem;
+      text-align: center;
+      font-style: italic;
+    }
+
+    /* floating hearts/roses container */
+    #floating-elements {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .float-item {
+      position: absolute;
+      animation: floatUp 7s linear forwards;
+      font-size: 2rem;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(-120vh) rotate(500deg); opacity: 0; }
+    }
+
+    /* music toggle */
+    .music-toggle {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      background: rgba(255, 182, 193, 0.3);
+      backdrop-filter: blur(10px);
+      padding: 12px 20px;
+      border-radius: 50px;
+      border: 1px solid #d4af37;
+      color: white;
+      cursor: pointer;
+      z-index: 1000;
+      font-size: 1rem;
+    }
+
+    /* responsive */
+    @media (max-width: 600px) {
+      h1 { font-size: 3rem; }
+      .page { padding: 1.5rem; }
+    }
+
+    /* final yes/no playful */
+    .question-box {
+      margin: 40px 0;
+      position: relative;
+    }
+
+    #noBtn {
+      background: #5a4a5a;
+      box-shadow: none;
+      transition: 0.1s;
+      position: relative;
+    }
+  </style>
 </head>
 <body>
+<div class="bg-gradient"></div>
+<div class="bg-particles"></div>
 
-    <audio id="bgMusic" loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
-    </audio>
+<!-- floating elements container -->
+<div id="floating-elements"></div>
 
-    <div id="page0" class="screen active">
-        <div class="glass-card">
-            <h2 style="font-family: 'Playfair Display';">Reserved for My Favorite Person</h2>
-            <input type="password" id="pw" placeholder="The magic words..." 
-                   style="padding: 15px; border-radius: 20px; border: none; margin-top: 20px; text-align: center;">
-            <br>
-            <button class="btn-gold" onclick="unlock()">ACCESS MY HEART</button>
-        </div>
+<!-- music toggle -->
+<div class="music-toggle" id="musicToggle">
+  <span>🎵</span> <span id="musicText">Play music</span>
+</div>
+<audio id="bgMusic" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+</audio>
+
+<!-- main pages area -->
+<div class="pages">
+  <!-- PAGE 0 - PASSWORD with hint (her name or phrase) -->
+  <div id="page0" class="page active">
+    <div style="text-align: center;">
+      <h2 style="font-weight:300;">💕 ချစ်သူအတွက် သီးသန့် 💕</h2>
+      <p style="margin: 20px 0; font-size:1.2rem;">For my favorite person</p>
+      <input type="text" id="secretKey" class="password-field" placeholder="ငါ့နှလုံးသားရဲ့ သော့ချက်" value="">
+      <div class="myanmar" style="margin-bottom:25px;">အရိပ်အမြွက် : မင်းနာမည် (your name)</div>
+      <button class="btn" onclick="unlockPage()">Open my heart</button>
+      <p style="margin-top:30px; opacity:0.7;">✨ Hint: type her name (e.g., "Su" or "May") – or just "iloveyou"</p>
     </div>
+  </div>
 
-    <div id="page1" class="screen">
-        <h1>Happy Birthday, My Love</h1>
-        <p style="font-size: 1.2rem; max-width: 500px;">Every year with you is my new favorite adventure. I've hidden a small token of my love for you here.</p>
-        <button class="btn-gold" onclick="next(2)">START THE JOURNEY</button>
+  <!-- PAGE 1 - HBD WELCOME -->
+  <div id="page1" class="page">
+    <div style="text-align: center;">
+      <h1>Happy Birthday</h1>
+      <div class="myanmar">မွေးနေ့မှာ ပျော်ရွှင်ပါစေ ချစ်ရတဲ့သူ</div>
+      <p style="font-size: 1.4rem; margin: 20px 0;">Today, the world shines brighter because you were born. 🌟</p>
+      <button class="btn" onclick="goToPage(2)">Continue ➔</button>
     </div>
+  </div>
 
-    <div id="page2" class="screen">
-        <h2 style="font-family: 'Playfair Display';">A Gift for You</h2>
-        <p>Click the box to open your surprise...</p>
-        
-        <div class="gift-container" id="giftWrapper" onclick="openGift()">
-            <div class="lid"></div>
-            <div class="gift-box"></div>
-        </div>
-
-        <div id="afterGift" style="display: none; animation: fadeIn 1s forwards;">
-            <p>Inside this box is a promise of forever.</p>
-            <button class="btn-gold" onclick="next(3)">SEE OUR MEMORIES</button>
-        </div>
+  <!-- PAGE 2 - REASONS I LOVE YOU (interactive cards) -->
+  <div id="page2" class="page">
+    <h2 style="font-family:'Playfair Display'; text-align:center;">♡ ၁၀၀ ချစ်ရတဲ့အကြောင်း ♡</h2>
+    <p style="text-align:center; margin-bottom:10px;">(100 reasons – tap each card)</p>
+    <div class="reasons-grid" id="reasonsGrid">
+      <!-- generated by js -->
     </div>
-
-    <div id="page3" class="screen">
-        <h2 style="font-family: 'Playfair Display';">Moments Frozen in Time</h2>
-        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center;">
-            <img src="https://images.unsplash.com/photo-1516589174184-c6852657dcf0?w=200&h=250&fit=crop" style="border: 5px solid white; transform: rotate(-5deg); width: 150px;">
-            <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&h=250&fit=crop" style="border: 5px solid white; transform: rotate(5deg); width: 150px;">
-        </div>
-        <button class="btn-gold" onclick="next(4)">THE FINAL STEP</button>
+    <div style="text-align:center;">
+      <button class="btn" onclick="goToPage(3)">Next: Love letter 💌</button>
     </div>
+  </div>
 
-    <div id="page4" class="screen">
-        <h1 style="font-size: 4.5rem;">Forever?</h1>
-        <div class="glass-card">
-            <p style="font-size: 1.3rem;">I don't need the world, I just need you. Every day, every laugh, every moment.</p>
-            <h2 id="finalMsg" style="color: var(--gold);">Will you stay by my side forever?</h2>
-            <button class="btn-gold" onclick="celebrate()">YES, A THOUSAND TIMES!</button>
-        </div>
+  <!-- PAGE 3 - LOVE LETTER WITH TYPEWRITER -->
+  <div id="page3" class="page">
+    <h2 style="font-family:'Playfair Display';">ကိုယ်တို့ရဲ့ကတိ</h2>
+    <div class="letter" id="letterBox">
+      <!-- typewriter effect fills here -->
     </div>
+    <button class="btn" onclick="goToPage(4)">Memories ♥</button>
+  </div>
 
-    <script>
-        function unlock() {
-            if(document.getElementById('pw').value.toLowerCase() === "iloveyou") {
-                document.getElementById('bgMusic').play();
-                next(1);
-                spawnHearts();
-            } else {
-                alert("Only the secret password works! (Hint: iloveyou)");
-            }
-        }
+  <!-- PAGE 4 - GALLERY (placeholder images) -->
+  <div id="page4" class="page">
+    <h2 style="font-family:'Playfair Display';">အမှတ်တရများ &nbsp; | &nbsp; our moments</h2>
+    <div class="gallery" id="galleryContainer"></div>
+    <div style="text-align:center; margin-top:30px;">
+      <button class="btn" onclick="goToPage(5)">The big question...</button>
+    </div>
+  </div>
 
-        function next(pageNo) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('page' + pageNo).classList.add('active');
-        }
+  <!-- PAGE 5 - FINAL PROPOSAL / WILL YOU BE MINE? -->
+  <div id="page5" class="page">
+    <h1 style="font-size:3.5rem;">ထာဝရ?</h1>
+    <h2 style="margin-bottom:20px;">Will you stay by my side forever?</h2>
+    <div class="question-box">
+      <button class="btn" id="yesBtn" onclick="finalCelebration()">Yes! ❤️</button>
+      <button class="btn" id="noBtn" onmouseover="moveNoButton()" style="position:relative;">No 😅</button>
+    </div>
+    <p class="myanmar" style="margin-top:30px;">(နှိပ်လိုက်ပါ ချစ်သူရယ်)</p>
+  </div>
+</div>
 
-        function openGift() {
-            const wrapper = document.getElementById('giftWrapper');
-            wrapper.classList.add('open');
-            setTimeout(() => {
-                document.getElementById('afterGift').style.display = 'block';
-            }, 800);
-        }
+<script>
+  // ------------------- GLOBAL VARIABLES --------------------
+  const pages = document.querySelectorAll('.page');
+  let currentPage = 0;
+  let musicPlaying = false;
+  const music = document.getElementById('bgMusic');
+  music.volume = 0.3;
 
-        function celebrate() {
-            document.getElementById('finalMsg').innerHTML = "YOU'VE MADE ME THE HAPPIEST MAN ALIVE! ❤️💍";
-            setInterval(createHeart, 100); // Super heart shower
-        }
+  // ------------------- MUSIC TOGGLE -----------------------
+  document.getElementById('musicToggle').addEventListener('click', (e) => {
+    if (musicPlaying) {
+      music.pause();
+      document.getElementById('musicText').innerText = 'Play music';
+    } else {
+      music.play().catch(() => alert('Tap screen to enable music'));
+      document.getElementById('musicText').innerText = 'Pause music';
+    }
+    musicPlaying = !musicPlaying;
+  });
 
-        function createHeart() {
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤️';
-            heart.className = 'floating-heart';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-            heart.style.bottom = '-5vh';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
-        }
+  // ------------------- PAGE CONTROL ------------------------
+  function goToPage(pageId) {
+    pages.forEach(p => p.classList.remove('active'));
+    document.getElementById(`page${pageId}`).classList.add('active');
+    currentPage = pageId;
 
-        function spawnHearts() {
-            setInterval(createHeart, 500);
-        }
-    </script>
+    // if page 2, generate reasons if not yet
+    if (pageId === 2 && document.getElementById('reasonsGrid').children.length === 0) {
+      generateReasons();
+    }
+    if (pageId === 3 && document.getElementById('letterBox').innerText === '') {
+      typewriterEffect();
+    }
+    if (pageId === 4 && document.getElementById('galleryContainer').children.length === 0) {
+      generateGallery();
+    }
+  }
+
+  // ------------------- UNLOCK PAGE (PASSWORD) --------------
+  function unlockPage() {
+    let input = document.getElementById('secretKey').value.trim().toLowerCase();
+    // you can customize the allowed names here
+    const allowed = ['su', 'may', 'thiri', 'nandar', 'aye', 'mya', 'cherry', 'hla', 'iloveyou', 'ချစ်တယ်'];
+    if (allowed.includes(input) || input.includes('love') || input === 'mygirl') {
+      // try to play music (browser may block autoplay)
+      music.play().then(() => { musicPlaying = true; document.getElementById('musicText').innerText = 'Pause music'; }).catch(()=>{});
+      startFloatingElements();
+      goToPage(1);
+    } else {
+      alert('❌ Only the right name works! Hint: your girlfriend’s name (like "Su")');
+    }
+  }
+
+  // ------------------- FLOATING HEARTS & ROSES ------------
+  function startFloatingElements() {
+    setInterval(createFloatingItem, 700);
+    setInterval(() => createFloatingItem('🌹'), 1200);
+  }
+
+  function createFloatingItem(emoji = '❤️') {
+    const el = document.createElement('div');
+    el.className = 'float-item';
+    el.innerText = emoji;
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (Math.random() * 4 + 5) + 's';
+    el.style.fontSize = (Math.random() * 25 + 20) + 'px';
+    el.style.opacity = Math.random() * 0.6 + 0.2;
+    document.getElementById('floating-elements').appendChild(el);
+    setTimeout(() => el.remove(), 8000);
+  }
+
+  // ------------------- GENERATE REASONS CARDS (PAGE 2) ----
+  function generateReasons() {
+    const reasons = [
+      { emoji: '😊', text: 'ပြုံးတဲ့အခါ' },
+      { emoji: '👀', text: 'မျက်လုံးတွေ' },
+      { emoji: '🎶', text: 'အသံလေး' },
+      { emoji: '🤗', text: 'ပွေ့ဖက်မှု' },
+      { emoji: '😘', text: 'နမ်းတဲ့အခါ' },
+      { emoji: '☕', text: 'အတူသောက်တဲ့ကော်ဖီ' },
+      { emoji: '🌧️', text: 'မိုးရွာတဲ့ည' },
+      { emoji: '📞', text: 'ဖုန်းပြောတိုင်း' },
+      { emoji: '💪', text: 'အားပေးမှု' },
+      { emoji: '🧠', text: 'ဉာဏ်ကွေး' },
+      { emoji: '❤️', text: 'ချစ်ခြင်း' },
+      { emoji: '😈', text: 'ဆော့တဲ့အခါ' },
+    ];
+    const grid = document.getElementById('reasonsGrid');
+    reasons.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'reason-card';
+      card.innerHTML = `<div class="emoji-big">${r.emoji}</div><span>${r.text}</span>`;
+      card.onclick = () => {
+        card.style.transform = 'scale(1.2) rotate(10deg)';
+        setTimeout(() => card.style.transform = '', 200);
+        createFloatingItem('💖');
+      };
+      grid.appendChild(card);
+    });
+    // add one extra big card
+    const cardMore = document.createElement('div');
+    cardMore.className = 'reason-card';
+    cardMore.style.width = '180px';
+    cardMore.innerHTML = `<div class="emoji-big">💯</div><span>...နောက်ထပ် ၈၈ ခု</span>`;
+    grid.appendChild(cardMore);
+  }
+
+  // ------------------- TYPEWRITER LOVE LETTER (PAGE 3) ----
+  function typewriterEffect() {
+    const letter = `ချစ်ရတဲ့ (အမည်) ... 💌
+
+ဒီနေ့ မင်းရဲ့မွေးနေ့။
+ကောင်းကင်မှာ ကြယ်တွေ ပွဲကျင်းပနေတယ်။
+မင်းစကားပြောတိုင်း ငါ့နှလုံးသား ကခုန်တယ်။
+မင်းရယ်မောသံဟာ ငါ့အတွက် တေးဂီတပဲ။
+
+ငါ့ဘဝရဲ့ အလှဆုံးအခန်းက မင်းနဲ့စတယ်။
+ကျေးဇူးတင်ပါတယ် ချစ်သူရယ်။
+
+ထာဝရ မင်းရဲ့ ...`;
+
+    const box = document.getElementById('letterBox');
+    let i = 0;
+    box.innerHTML = '';
+    function type() {
+      if (i < letter.length) {
+        box.innerHTML += letter.charAt(i);
+        i++;
+        setTimeout(type, 60);
+      } else {
+        box.classList.remove('typewriter');
+      }
+    }
+    box.classList.add('typewriter');
+    type();
+  }
+
+  // ------------------- GENERATE GALLERY (PAGE 4) ----------
+  function generateGallery() {
+    const gallery = document.getElementById('galleryContainer');
+    const images = [
+      { url: 'https://images.unsplash.com/photo-1522673607200-164d1b6ce717?w=200&h=250&fit=crop', caption: 'တောင်တန်းခရီး', rot: -3 },
+      { url: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=200&h=250&fit=crop', caption: 'ပျော်စရာနေ့', rot: 4 },
+      { url: 'https://images.unsplash.com/photo-1516589174184-c6852657dcf0?w=200&h=250&fit=crop', caption: 'ရင်ခွင်ထဲ', rot: -2 },
+      { url: 'https://images.unsplash.com/photo-1503443207922-dff7d543fd0e?w=200&h=250&fit=crop', caption: 'အတူတူ', rot: 3 },
+    ];
+    images.forEach(img => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+      item.style.setProperty('--rot', img.rot + 'deg');
+      item.innerHTML = `<img src="${img.url}" alt="memory"><div class="caption">${img.caption}</div>`;
+      gallery.appendChild(item);
+    });
+  }
+
+  // ------------------- MOVE NO BUTTON (playful) -----------
+  function moveNoButton() {
+    const noBtn = document.getElementById('noBtn');
+    const x = Math.random() * 200 - 100;
+    const y = Math.random() * 100 - 50;
+    noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    noBtn.style.transition = '0.2s';
+    setTimeout(() => noBtn.style.transform = '', 500);
+  }
+
+  // ------------------- FINAL CELEBRATION ------------------
+  function finalCelebration() {
+    // disable further movement of No
+    document.getElementById('noBtn').onmouseover = null;
+    document.getElementById('yesBtn').innerText = "❤️ FOREVER! ❤️";
+    document.getElementById('yesBtn').style.background = "#ff9fbb";
+    // massive floating hearts
+    for (let i=0; i<50; i++) {
+      setTimeout(() => {
+        createFloatingItem('❤️');
+        createFloatingItem('🌹');
+        createFloatingItem('💞');
+      }, i*30);
+    }
+    // show final message in a pop or banner
+    const msg = document.createElement('div');
+    msg.innerText = "ထာဝရ ကျေးဇူးတင်ပါတယ် ချစ်သူရယ် 💍";
+    msg.style.position = 'fixed';
+    msg.style.top = '30%';
+    msg.style.left = '50%';
+    msg.style.transform = 'translate(-50%, -50%)';
+    msg.style.background = 'linear-gradient(145deg, #d4af37, #f78fb3)';
+    msg.style.padding = '30px 50px';
+    msg.style.borderRadius = '80px';
+    msg.style.fontSize = '2rem';
+    msg.style.zIndex = '10000';
+    msg.style.boxShadow = '0 0 100px gold';
+    msg.style.fontWeight = 'bold';
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 4000);
+  }
+
+  // start floating after unlock, but also preload a few on load
+  window.onload = function() {
+    // create some floating elements for atmosphere
+    for (let i=0; i<5; i++) {
+      setTimeout(() => createFloatingItem('❤️'), i*200);
+      setTimeout(() => createFloatingItem('🌹'), i*300);
+    }
+    // press enter on password field
+    document.getElementById('secretKey').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') unlockPage();
+    });
+  };
+</script>
 </body>
 </html>
