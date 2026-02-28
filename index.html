@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Birthday My Love ❤️</title>
+
+<style>
+body {
+    margin:0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#ff4e8a,#ff9a9e);
+    color:white;
+    text-align:center;
+    overflow-x:hidden;
+}
+
+/* PASSWORD SCREEN */
+#lockScreen{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    z-index:999;
+}
+
+input{
+    padding:12px;
+    border-radius:20px;
+    border:none;
+    text-align:center;
+}
+
+button{
+    padding:12px 25px;
+    border:none;
+    border-radius:30px;
+    background:white;
+    color:#ff4e8a;
+    margin-top:10px;
+    cursor:pointer;
+}
+
+.hidden{display:none;}
+
+.container{
+    padding:50px 20px;
+}
+
+h1{
+    font-size:40px;
+    animation:float 3s infinite;
+}
+
+@keyframes float{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+}
+
+/* HEARTS */
+.heart{
+    position:fixed;
+    bottom:-20px;
+    font-size:20px;
+    animation:rise 6s linear infinite;
+}
+
+@keyframes rise{
+    0%{transform:translateY(0);opacity:1;}
+    100%{transform:translateY(-100vh);opacity:0;}
+}
+
+/* GALLERY */
+.gallery img{
+    width:200px;
+    border-radius:15px;
+    margin:10px;
+    transition:0.3s;
+}
+.gallery img:hover{
+    transform:scale(1.1);
+}
+
+/* PROPOSAL */
+#proposal{
+    margin-top:40px;
+    font-size:28px;
+    display:none;
+}
+
+/* FIREWORK CANVAS */
+canvas{
+    position:fixed;
+    top:0;
+    left:0;
+    pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD LOCK -->
+<div id="lockScreen">
+    <h2>Enter Secret Password 💖</h2>
+    <input type="password" id="password" placeholder="Enter password">
+    <button onclick="unlock()">Open My Heart ❤️</button>
+</div>
+
+<canvas id="fireworks"></canvas>
+
+<div class="container hidden" id="mainContent">
+
+<h1>Happy Birthday My Queen 🎂❤️</h1>
+
+<p>You are my everything. My happiness. My forever 💍</p>
+
+<button onclick="showProposal()">Click For Surprise 💖</button>
+
+<div id="proposal">
+    Will You Stay With Me Forever? 💍🥺❤️
+</div>
+
+<h2>Our Beautiful Memories 📸</h2>
+<div class="gallery">
+    <img src="photo1.jpg">
+    <img src="photo2.jpg">
+    <img src="photo3.jpg">
+</div>
+
+</div>
+
+<!-- Romantic Music -->
+<audio id="music" autoplay loop>
+<source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* PASSWORD */
+function unlock(){
+    if(document.getElementById("password").value === "iloveyou"){
+        document.getElementById("lockScreen").style.display="none";
+        document.getElementById("mainContent").classList.remove("hidden");
+        startHearts();
+        startFireworks();
+    } else {
+        alert("Wrong password 😝");
+    }
+}
+
+/* HEART ANIMATION */
+function startHearts(){
+    setInterval(()=>{
+        let heart=document.createElement("div");
+        heart.innerHTML="❤️";
+        heart.className="heart";
+        heart.style.left=Math.random()*100+"vw";
+        heart.style.fontSize=(20+Math.random()*30)+"px";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),6000);
+    },500);
+}
+
+/* PROPOSAL */
+function showProposal(){
+    document.getElementById("proposal").style.display="block";
+}
+
+/* FIREWORKS */
+function startFireworks(){
+    const canvas=document.getElementById("fireworks");
+    const ctx=canvas.getContext("2d");
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+
+    setInterval(()=>{
+        let x=Math.random()*canvas.width;
+        let y=Math.random()*canvas.height/2;
+        for(let i=0;i<30;i++){
+            ctx.beginPath();
+            ctx.arc(x+Math.random()*100-50,y+Math.random()*100-50,3,0,Math.PI*2);
+            ctx.fillStyle="white";
+            ctx.fill();
+        }
+    },800);
+}
+
+</script>
+
+</body>
+</html>
